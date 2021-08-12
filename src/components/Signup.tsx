@@ -1,6 +1,7 @@
-import { Form, Input, Button, message } from "antd";
+import { Form, Input, Button } from "antd";
 import { useHistory } from "react-router-dom";
 import api from "../utils/api";
+import { showError } from "../utils/messages";
 
 const Signup = () => {
   const history = useHistory();
@@ -26,14 +27,10 @@ const Signup = () => {
   const onFinish = async (values: any) => {
     try {
       await api.post("/users/register", values.user);
-      history.push("login");
+      history.push("login", { newSignUp: true });
     } catch (err) {
       showError(err.response.data.errorMessage);
     }
-  };
-
-  const showError = (errorMessage: string) => {
-    message.error(errorMessage);
   };
 
   return (

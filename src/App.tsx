@@ -1,6 +1,7 @@
 import { Layout, Menu } from "antd";
 
 import { Route } from "react-router-dom";
+import Login from "./components/Login";
 import Signup from "./components/Signup";
 
 const { Header, Content, Footer } = Layout;
@@ -25,6 +26,7 @@ function App() {
           style={{ padding: 24, minHeight: 380 }}
         >
           <Route path="/register" component={Signup} />
+          <Route path="/login" component={Login} />
         </div>
       </Content>
       <Footer style={{ textAlign: "center" }}>Expense Tracker ©2021</Footer>
