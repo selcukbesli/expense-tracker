@@ -1,26 +1,42 @@
 import { Form, Input, Button, Result } from "antd";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
-import api from "../utils/api";
-import { showError } from "../utils/messages";
+import { AppState } from "../store";
+import { login } from "../store/actions/userActions";
+import { LoginForm } from "../types/user";
+import * as messages from "../utils/messages";
 
 const Login = () => {
   const history = useHistory();
   const location = useLocation<{ newSignUp?: boolean }>();
+  const dispatch = useDispatch();
 
-  const onFinish = async (values: any) => {
-    try {
-      const res = await api.post("/users/login", values);
-      history.push("/");
-      console.log(res.data);
-    } catch (err) {
-      console.log({ err });
-      showError(err.response.data.errorMessage);
-    }
+  const { data, error, loading } = useSelector((state: AppState) => state.user);
+  const { message } = data;
+
+  const onFinish = (values: LoginForm) => {
+    dispatch(login(values));
   };
+
+  useEffect(() => {
+    error && messages.showError(error);
+  }, [error]);
+
+  useEffect(() => {
+    message && messages.showSuccess(message);
+  }, [message]);
 
   const onFinishFailed = (errorInfo: any) => {
     console.log("Failed:", errorInfo);
   };
+
+  useEffect(() => {
+    const token = localStorage.getItem("jwt");
+    if (token) {
+      history.push("/");
+    }
+  }, [history, data]);
 
   return (
     <Form

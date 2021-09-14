@@ -28,7 +28,7 @@ const Signup = () => {
     try {
       await api.post("/users/register", values.user);
       history.push("login", { newSignUp: true });
-    } catch (err) {
+    } catch (err: any) {
       showError(err.response.data.errorMessage);
     }
   };
