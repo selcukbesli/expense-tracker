@@ -31,3 +31,23 @@ export const addCategory =
       });
     }
   };
+
+export const updateCategory =
+  (form: Partial<CategoryForm>, categoryId: number) =>
+  async (dispatch: CategoryDispatch) => {
+    dispatch({ type: "UPDATE_CATEGORY_START" });
+
+    try {
+      const response = await api.put<Category>(
+        `/categories/${categoryId}`,
+        form
+      );
+
+      dispatch({ type: "UPDATE_CATEGORY_SUCCESS", payload: response.data });
+    } catch (error: any) {
+      dispatch({
+        type: "UPDATE_CATEGORY_ERROR",
+        payload: error.response.data.errorMessage,
+      });
+    }
+  };

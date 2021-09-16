@@ -1,10 +1,27 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Table, Tag, Modal, Button, Form, Input, Select, Col, Row } from "antd";
+import {
+  Table,
+  Tag,
+  Modal,
+  Button,
+  Form,
+  Input,
+  Select,
+  Col,
+  Row,
+  Space,
+  Spin,
+} from "antd";
 import { GithubPicker } from "react-color";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import { Category, CategoryForm } from "../types/category";
-import { getCategories, addCategory } from "../store/actions/categoryActions";
+import {
+  getCategories,
+  addCategory,
+  updateCategory,
+} from "../store/actions/categoryActions";
 import { AppState } from "../store";
 
 type Mode = "new" | "edit";
@@ -12,24 +29,8 @@ type Mode = "new" | "edit";
 const emptyForm: CategoryForm = {
   name: "",
   type: "expense",
-  color: "black",
+  color: "#EB9694",
 };
-
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-  },
-  {
-    title: "Type",
-    key: "type",
-    dataIndex: "type",
-    render: (text: string, category: Category) => (
-      <Tag color={category.color}>{text.toUpperCase()}</Tag>
-    ),
-  },
-];
 
 const Categories = () => {
   const [form, setForm] = useState<CategoryForm>(emptyForm);
@@ -57,6 +58,8 @@ const Categories = () => {
     // Create or Update will be invoked depends on mode
     if (mode === "new") {
       dispatch(addCategory(form));
+    } else if (mode === "edit") {
+      dispatch(updateCategory(form, form.id!));
     }
 
     setIsModalVisible(false);
@@ -70,12 +73,52 @@ const Categories = () => {
     setForm(emptyForm);
   };
 
+  const onAddCategory = () => {
+    showModal("new");
+  };
+
+  const onUpdateCategory = (category: Category) => {
+    setMode("edit");
+    setIsModalVisible(true);
+    setForm(category);
+  };
+
+  // Table Properties
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
+      title: "Type",
+      key: "type",
+      dataIndex: "type",
+      render: (text: string, category: Category) => (
+        <Tag color={category.color}>{text.toUpperCase()}</Tag>
+      ),
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (text: string, category: Category) => (
+        <Space size="middle">
+          <EditOutlined
+            style={{ color: "#2a4a9c", fontSize: "16px" }}
+            onClick={() => onUpdateCategory(category)}
+          />
+          <DeleteOutlined style={{ color: "#9e0620", fontSize: "16px" }} />{" "}
+        </Space>
+      ),
+    },
+  ];
+
   return (
     <>
       <div>
         <Row justify="end" style={{ padding: 8 }}>
           <Col>
-            <Button type="primary" onClick={() => showModal("new")}>
+            <Button type="primary" onClick={onAddCategory}>
               New category
             </Button>
           </Col>
@@ -96,7 +139,8 @@ const Categories = () => {
             </Form.Item>
             <Form.Item label="Category Type">
               <Select
-                defaultValue={form.type}
+                defaultValue="expense"
+                value={form.type}
                 onChange={(value) => setForm({ ...form, type: value })}
               >
                 <Select.Option value="expense">Expense</Select.Option>
@@ -107,13 +151,19 @@ const Categories = () => {
               <GithubPicker
                 color={form.color}
                 onChange={(color) => setForm({ ...form, color: color.hex })}
-                width="225px"
+                width="60%"
+                triangle="hide"
               />
             </Form.Item>
           </Form>
         </Modal>
       </div>
-      <Table columns={columns} dataSource={data} />
+      <Table
+        columns={columns}
+        dataSource={data}
+        rowKey={(record) => record.id}
+        loading={loading}
+      />
     </>
   );
 };
