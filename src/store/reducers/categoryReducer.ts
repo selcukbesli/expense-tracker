@@ -9,11 +9,12 @@ const defaultState: CategoryState = {
 const categoryReducer = (
   state: CategoryState = defaultState,
   action: CategoryAction
-) => {
+): CategoryState => {
   switch (action.type) {
     case "GET_CATEGORIES_START":
     case "ADD_CATEGORY_START":
     case "UPDATE_CATEGORY_START":
+    case "DELETE_CATEGORY_START":
       return {
         ...state,
         loading: true,
@@ -53,6 +54,19 @@ const categoryReducer = (
         ),
         loading: false,
         error: "",
+      };
+    case "DELETE_CATEGORY_SUCCESS":
+      return {
+        ...state,
+        data: state.data.filter((ctg) => ctg.id !== action.payload),
+        loading: false,
+        error: "",
+      };
+    case "DELETE_CATEGORY_ERROR":
+      return {
+        ...state,
+        loading: false,
+        error: "Error deleting category! ",
       };
 
     default:

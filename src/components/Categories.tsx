@@ -11,7 +11,6 @@ import {
   Col,
   Row,
   Space,
-  Spin,
 } from "antd";
 import { GithubPicker } from "react-color";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
@@ -21,10 +20,11 @@ import {
   getCategories,
   addCategory,
   updateCategory,
+  deleteCategory,
 } from "../store/actions/categoryActions";
 import { AppState } from "../store";
 
-type Mode = "new" | "edit";
+type Mode = "new" | "edit" | "delete";
 
 const emptyForm: CategoryForm = {
   name: "",
@@ -60,6 +60,8 @@ const Categories = () => {
       dispatch(addCategory(form));
     } else if (mode === "edit") {
       dispatch(updateCategory(form, form.id!));
+    } else if (mode === "delete") {
+      dispatch(deleteCategory(form.id!));
     }
 
     setIsModalVisible(false);
@@ -81,6 +83,12 @@ const Categories = () => {
     setMode("edit");
     setIsModalVisible(true);
     setForm(category);
+  };
+
+  const onDeleteCategory = (categoryId: number) => {
+    setMode("delete");
+    setIsModalVisible(true);
+    setForm({ ...form, id: categoryId });
   };
 
   // Table Properties
@@ -107,7 +115,12 @@ const Categories = () => {
             style={{ color: "#2a4a9c", fontSize: "16px" }}
             onClick={() => onUpdateCategory(category)}
           />
-          <DeleteOutlined style={{ color: "#9e0620", fontSize: "16px" }} />{" "}
+          <DeleteOutlined
+            style={{ color: "#9e0620", fontSize: "16px" }}
+            onClick={() => {
+              onDeleteCategory(category.id);
+            }}
+          />
         </Space>
       ),
     },
@@ -124,38 +137,49 @@ const Categories = () => {
           </Col>
         </Row>
         <Modal
-          title={mode === "new" ? "Create Category" : "Update Category"}
+          title={
+            mode === "new"
+              ? "Add Category"
+              : mode === "edit"
+              ? "Update Category"
+              : "Delete Category"
+          }
           visible={isModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}
-          okButtonProps={{ disabled: form.name.trim().length === 0 }}
+          okButtonProps={{
+            disabled: form.name.trim().length === 0 && mode !== "delete",
+          }}
         >
-          <Form labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
-            <Form.Item label="Category Name">
-              <Input
-                value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
-              />
-            </Form.Item>
-            <Form.Item label="Category Type">
-              <Select
-                defaultValue="expense"
-                value={form.type}
-                onChange={(value) => setForm({ ...form, type: value })}
-              >
-                <Select.Option value="expense">Expense</Select.Option>
-                <Select.Option value="income">Income</Select.Option>
-              </Select>
-            </Form.Item>
-            <Form.Item label="Category Color">
-              <GithubPicker
-                color={form.color}
-                onChange={(color) => setForm({ ...form, color: color.hex })}
-                width="60%"
-                triangle="hide"
-              />
-            </Form.Item>
-          </Form>
+          {(mode === "new" || mode === "edit") && (
+            <Form labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
+              <Form.Item label="Category Name">
+                <Input
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                />
+              </Form.Item>
+              <Form.Item label="Category Type">
+                <Select
+                  defaultValue="expense"
+                  value={form.type}
+                  onChange={(value) => setForm({ ...form, type: value })}
+                >
+                  <Select.Option value="expense">Expense</Select.Option>
+                  <Select.Option value="income">Income</Select.Option>
+                </Select>
+              </Form.Item>
+              <Form.Item label="Category Color">
+                <GithubPicker
+                  color={form.color}
+                  onChange={(color) => setForm({ ...form, color: color.hex })}
+                  width="60%"
+                  triangle="hide"
+                />
+              </Form.Item>
+            </Form>
+          )}
+          {mode === "delete" && <p>Do you want to delete the Category?</p>}
         </Modal>
       </div>
       <Table
