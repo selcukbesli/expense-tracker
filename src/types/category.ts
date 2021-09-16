@@ -1,4 +1,5 @@
 import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
 
 export interface Category {
   id: number;
@@ -31,7 +32,6 @@ interface GET_SUCCESS {
 
 interface GET_ERROR {
   type: "GET_CATEGORIES_ERROR";
-  payload: string;
 }
 interface ADD_START {
   type: "ADD_CATEGORY_START";
@@ -44,7 +44,6 @@ interface ADD_SUCCESS {
 
 interface ADD_ERROR {
   type: "ADD_CATEGORY_ERROR";
-  payload: string;
 }
 interface UPDATE_START {
   type: "UPDATE_CATEGORY_START";
@@ -57,7 +56,6 @@ interface UPDATE_SUCCESS {
 
 interface UPDATE_ERROR {
   type: "UPDATE_CATEGORY_ERROR";
-  payload: string;
 }
 interface DELETE_START {
   type: "DELETE_CATEGORY_START";

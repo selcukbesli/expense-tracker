@@ -8,10 +8,9 @@ export const getCategories = () => async (dispatch: CategoryDispatch) => {
     const response = await api.get<Category[]>("/categories");
 
     dispatch({ type: "GET_CATEGORIES_SUCCESS", payload: response.data });
-  } catch (error: any) {
+  } catch {
     dispatch({
       type: "GET_CATEGORIES_ERROR",
-      payload: error.response.data.errorMessage,
     });
   }
 };
@@ -24,10 +23,9 @@ export const addCategory =
       const response = await api.post<Category>("categories", form);
 
       dispatch({ type: "ADD_CATEGORY_SUCCESS", payload: response.data });
-    } catch (error: any) {
+    } catch {
       dispatch({
         type: "ADD_CATEGORY_ERROR",
-        payload: error.response.data.errorMessage,
       });
     }
   };
@@ -44,10 +42,9 @@ export const updateCategory =
       );
 
       dispatch({ type: "UPDATE_CATEGORY_SUCCESS", payload: response.data });
-    } catch (error: any) {
+    } catch {
       dispatch({
         type: "UPDATE_CATEGORY_ERROR",
-        payload: error.response.data.errorMessage,
       });
     }
   };
