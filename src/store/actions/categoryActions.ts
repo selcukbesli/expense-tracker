@@ -1,4 +1,4 @@
-import { Category, CategoryDispatch } from "../../types/category";
+import { Category, CategoryDispatch, CategoryForm } from "../../types/category";
 import api from "../../utils/api";
 
 export const getCategories = () => async (dispatch: CategoryDispatch) => {
@@ -6,7 +6,6 @@ export const getCategories = () => async (dispatch: CategoryDispatch) => {
 
   try {
     const response = await api.get<Category[]>("/categories");
-    console.log(response);
 
     dispatch({ type: "GET_CATEGORIES_SUCCESS", payload: response.data });
   } catch (error: any) {
@@ -16,3 +15,19 @@ export const getCategories = () => async (dispatch: CategoryDispatch) => {
     });
   }
 };
+
+export const addCategory =
+  (form: CategoryForm) => async (dispatch: CategoryDispatch) => {
+    dispatch({ type: "ADD_CATEGORY_START" });
+
+    try {
+      const response = await api.post<Category>("categories", form);
+
+      dispatch({ type: "ADD_CATEGORY_SUCCESS", payload: response.data });
+    } catch (error: any) {
+      dispatch({
+        type: "ADD_CATEGORY_ERROR",
+        payload: error.response.data.errorMessage,
+      });
+    }
+  };

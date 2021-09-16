@@ -12,6 +12,7 @@ const categoryReducer = (
 ) => {
   switch (action.type) {
     case "GET_CATEGORIES_START":
+    case "ADD_CATEGORY_START":
       return {
         ...state,
         loading: true,
@@ -27,12 +28,20 @@ const categoryReducer = (
       };
 
     case "GET_CATEGORIES_ERROR":
+    case "ADD_CATEGORY_ERROR":
       return {
         ...state,
         loading: false,
         error: action.payload,
       };
 
+    case "ADD_CATEGORY_SUCCESS":
+      return {
+        ...state,
+        data: [...state.data, action.payload],
+        loading: false,
+        error: "",
+      };
     default:
       return state;
   }
