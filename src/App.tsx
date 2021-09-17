@@ -5,6 +5,7 @@ import Signup from "./components/Signup";
 import Login from "./components/Login";
 import PrivateRoute from "./components/PriveRoute";
 import Categories from "./components/Categories";
+import Records from "./components/Records";
 
 const { Header, Content, Footer } = Layout;
 
@@ -30,6 +31,7 @@ function App() {
           <Route path="/register" component={Signup} />
           <Route path="/login" component={Login} />
           <PrivateRoute path="/categories" component={Categories} />
+          <PrivateRoute path="/records" component={Records} />
         </div>
       </Content>
       <Footer style={{ textAlign: "center" }}>Expense Tracker ©2021</Footer>
