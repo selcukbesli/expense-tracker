@@ -23,8 +23,7 @@ import {
   deleteCategory,
 } from "../store/actions/categoryActions";
 import { AppState } from "../store";
-
-type Mode = "new" | "edit" | "delete";
+import { Mode } from "../types/general";
 
 const emptyForm: CategoryForm = {
   name: "",

@@ -10,6 +10,12 @@ export interface Record {
   category: Category;
 }
 
+export interface RecordForm {
+  title: string;
+  amount: number;
+  category_id: number | null;
+}
+
 export interface RecordState {
   data: Record[];
   loading: boolean;
@@ -28,7 +34,25 @@ interface GET_SUCCESS {
 interface GET_ERROR {
   type: "GET_RECORDS_ERROR";
 }
+interface ADD_START {
+  type: "ADD_RECORD_START";
+}
 
-export type RecordAction = GET_START | GET_SUCCESS | GET_ERROR;
+interface ADD_SUCCESS {
+  type: "ADD_RECORD_SUCCESS";
+  payload: Record;
+}
+
+interface ADD_ERROR {
+  type: "ADD_RECORD_ERROR";
+}
+
+export type RecordAction =
+  | GET_START
+  | GET_SUCCESS
+  | GET_ERROR
+  | ADD_START
+  | ADD_SUCCESS
+  | ADD_ERROR;
 
 export type RecordDispatch = ThunkDispatch<RecordState, void, RecordAction>;

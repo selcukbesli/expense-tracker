@@ -12,6 +12,7 @@ const recordReducer = (
 ): RecordState => {
   switch (action.type) {
     case "GET_RECORDS_START":
+    case "ADD_RECORD_START":
       return {
         ...state,
         loading: true,
@@ -25,7 +26,16 @@ const recordReducer = (
         error: "",
       };
 
+    case "ADD_RECORD_SUCCESS":
+      return {
+        ...state,
+        data: [action.payload, ...state.data],
+        loading: false,
+        error: "",
+      };
+
     case "GET_RECORDS_ERROR":
+    case "ADD_RECORD_ERROR":
       return {
         ...state,
         loading: false,
