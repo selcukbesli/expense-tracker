@@ -13,6 +13,8 @@ const recordReducer = (
   switch (action.type) {
     case "GET_RECORDS_START":
     case "ADD_RECORD_START":
+    case "UPDATE_RECORD_START":
+    case "DELETE_RECORD_START":
       return {
         ...state,
         loading: true,
@@ -34,8 +36,27 @@ const recordReducer = (
         error: "",
       };
 
+    case "UPDATE_RECORD_SUCCESS":
+      return {
+        ...state,
+        data: state.data.map((record) =>
+          record.id === action.payload.id ? action.payload : record
+        ),
+        loading: false,
+        error: "",
+      };
+    case "DELETE_RECORD_SUCCESS":
+      return {
+        ...state,
+        data: state.data.filter((ctg) => ctg.id !== action.payload),
+        loading: false,
+        error: "",
+      };
+
     case "GET_RECORDS_ERROR":
     case "ADD_RECORD_ERROR":
+    case "UPDATE_RECORD_ERROR":
+    case "DELETE_RECORD_ERROR":
       return {
         ...state,
         loading: false,

@@ -25,3 +25,31 @@ export const addRecord =
       dispatch({ type: "ADD_RECORD_ERROR" });
     }
   };
+
+export const updateRecord =
+  (form: RecordForm) => async (dispatch: RecordDispatch) => {
+    dispatch({ type: "UPDATE_RECORD_START" });
+
+    try {
+      const response = await api.put<Record>(`/records/${form.recordId}`, {
+        title: form.title,
+        amount: form.amount,
+        category_id: form.category_id,
+      });
+
+      dispatch({ type: "UPDATE_RECORD_SUCCESS", payload: response.data });
+    } catch {
+      dispatch({ type: "UPDATE_RECORD_ERROR" });
+    }
+  };
+export const deleteRecord =
+  (recordId: number) => async (dispatch: RecordDispatch) => {
+    dispatch({ type: "DELETE_RECORD_START" });
+
+    try {
+      await api.delete<Record>(`/records/${recordId}`);
+      dispatch({ type: "DELETE_RECORD_SUCCESS", payload: recordId });
+    } catch {
+      dispatch({ type: "DELETE_RECORD_ERROR" });
+    }
+  };

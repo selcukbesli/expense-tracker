@@ -17,7 +17,12 @@ import {
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import { AppState } from "../store";
-import { addRecord, getRecords } from "../store/actions/recordActions";
+import {
+  addRecord,
+  deleteRecord,
+  getRecords,
+  updateRecord,
+} from "../store/actions/recordActions";
 import { Record, RecordForm } from "../types/record";
 import { Mode } from "../types/general";
 import { getCategories } from "../store/actions/categoryActions";
@@ -62,9 +67,9 @@ const Records = () => {
       dispatch(addRecord(form));
       console.log(form);
     } else if (mode === "edit") {
-      // dispatch(updateCategory(form, form.id!));
+      dispatch(updateRecord(form));
     } else if (mode === "delete") {
-      // dispatch(deleteCategory(form.id!));
+      dispatch(deleteRecord(form.recordId!));
     }
 
     setIsModalVisible(false);
@@ -80,6 +85,18 @@ const Records = () => {
 
   const onAddRecord = () => {
     showModal("new");
+  };
+
+  const onUpdateRecord = (recordForm: RecordForm) => {
+    setMode("edit");
+    setIsModalVisible(true);
+    setForm(recordForm);
+  };
+
+  const onDeleteRecord = (recordId: number) => {
+    setMode("delete");
+    setIsModalVisible(true);
+    setForm({ ...form, recordId });
   };
 
   const columns: TableColumnsType<Record> = [
@@ -129,20 +146,31 @@ const Records = () => {
         <Space size="middle">
           <EditOutlined
             style={{ color: "#2a4a9c", fontSize: "16px" }}
-            onClick={() => {}}
+            onClick={() =>
+              onUpdateRecord({
+                amount: record.amount,
+                title: record.title,
+                category_id: record.category.id,
+                recordId: record.id,
+              })
+            }
           />
           <DeleteOutlined
             style={{ color: "#9e0620", fontSize: "16px" }}
-            onClick={() => {}}
+            onClick={() => onDeleteRecord(record.id)}
           />
         </Space>
       ),
     },
   ];
 
-  const isFormValid =
-    !(!form.title.trim().length || form.amount < 0.01 || !form.category_id) &&
-    mode !== "delete";
+  const isFormValid = !(
+    !form.title.trim().length ||
+    form.amount < 0.01 ||
+    !form.category_id
+  );
+
+  console.log(isFormValid);
 
   return (
     <>
@@ -165,7 +193,7 @@ const Records = () => {
           visible={isModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}
-          okButtonProps={{ disabled: !isFormValid }}
+          okButtonProps={{ disabled: mode !== "delete" && !isFormValid }}
         >
           {(mode === "new" || mode === "edit") && (
             <Form labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
@@ -202,7 +230,7 @@ const Records = () => {
               </Form.Item>
             </Form>
           )}
-          {mode === "delete" && <p>Do you want to delete the Category?</p>}
+          {mode === "delete" && <p>Do you want to delete the Record?</p>}
         </Modal>
       </div>
       <Table
