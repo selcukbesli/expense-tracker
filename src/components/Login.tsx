@@ -1,8 +1,8 @@
-import { Form, Input, Button, Result } from "antd";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
-import { AppState } from "../store";
+import { Form, Input, Button, Result } from "antd";
+
+import { useAppDispatch, useAppSelector } from "../store";
 import { login } from "../store/actions/userActions";
 import { LoginForm } from "../types/user";
 import * as messages from "../utils/messages";
@@ -10,9 +10,9 @@ import * as messages from "../utils/messages";
 const Login = () => {
   const history = useHistory();
   const location = useLocation<{ newSignUp?: boolean }>();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const { data, error, loading } = useSelector((state: AppState) => state.user);
+  const { data, error } = useAppSelector((state) => state.user);
   const { message } = data;
 
   const onFinish = (values: LoginForm) => {

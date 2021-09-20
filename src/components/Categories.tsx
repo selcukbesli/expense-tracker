@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   Table,
   Tag,
@@ -22,7 +21,7 @@ import {
   updateCategory,
   deleteCategory,
 } from "../store/actions/categoryActions";
-import { AppState } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 import { Mode } from "../types/general";
 
 const emptyForm: CategoryForm = {
@@ -36,12 +35,10 @@ const Categories = () => {
   const [mode, setMode] = useState<Mode>("new");
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   //eslint-disable-next-line
-  const { data, loading, error } = useSelector(
-    (state: AppState) => state.categories
-  );
+  const { data, loading, error } = useAppSelector((state) => state.categories);
 
   useEffect(() => {
     dispatch(getCategories());

@@ -1,12 +1,12 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
-import { AppState } from "../store";
+
+import { useAppDispatch, useAppSelector } from "../store";
 import { logout } from "../store/actions/userActions";
 
 const Logout = () => {
-  const dispatch = useDispatch();
-  const { data } = useSelector((state: AppState) => state.user);
+  const dispatch = useAppDispatch();
+  const { data } = useAppSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(logout());

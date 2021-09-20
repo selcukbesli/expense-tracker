@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
   Col,
@@ -16,7 +15,7 @@ import {
 } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
-import { AppState } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 import {
   addRecord,
   deleteRecord,
@@ -38,16 +37,11 @@ const Records = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form, setForm] = useState<RecordForm>(emptyForm);
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { data, error, loading } = useSelector(
-    (state: AppState) => state.records
-  );
+  const { data, loading } = useAppSelector((state) => state.records);
 
-  const { data: categories } = useSelector(
-    (state: AppState) => state.categories
-  );
+  const { data: categories } = useAppSelector((state) => state.categories);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(getRecords());

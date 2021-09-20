@@ -1,18 +1,16 @@
 import { Layout, Menu } from "antd";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom";
-import { AppState } from "../store";
+import { useAppDispatch, useAppSelector } from "../store";
 import { isLoggedIn } from "../store/actions/userActions";
 
 const AppHeader = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const {
     data: { username },
     loading,
-    error,
-  } = useSelector((state: AppState) => state.user);
+  } = useAppSelector((state) => state.user);
 
   const { pathname } = useLocation();
 
