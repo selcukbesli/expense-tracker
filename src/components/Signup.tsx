@@ -26,7 +26,7 @@ const Signup = () => {
 
   const onFinish = async (values: any) => {
     try {
-      await api.post("/users/register", values.user);
+      await api().post("/users/register", values.user);
       history.push("login", { newSignUp: true });
     } catch (err: any) {
       showError(err.response.data.errorMessage);

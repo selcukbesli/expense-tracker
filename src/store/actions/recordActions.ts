@@ -5,7 +5,7 @@ export const getRecords = () => async (dispatch: RecordDispatch) => {
   dispatch({ type: "GET_RECORDS_START" });
 
   try {
-    const response = await api.get<Record[]>("/records");
+    const response = await api().get<Record[]>("/records");
 
     response.data.sort((a, b) => b.id - a.id);
 
@@ -19,7 +19,7 @@ export const addRecord =
     dispatch({ type: "ADD_RECORD_START" });
 
     try {
-      const response = await api.post<Record>("/records", form);
+      const response = await api().post<Record>("/records", form);
       dispatch({ type: "ADD_RECORD_SUCCESS", payload: response.data });
     } catch {
       dispatch({ type: "ADD_RECORD_ERROR" });
@@ -31,7 +31,7 @@ export const updateRecord =
     dispatch({ type: "UPDATE_RECORD_START" });
 
     try {
-      const response = await api.put<Record>(`/records/${form.recordId}`, {
+      const response = await api().put<Record>(`/records/${form.recordId}`, {
         title: form.title,
         amount: form.amount,
         category_id: form.category_id,
@@ -47,7 +47,7 @@ export const deleteRecord =
     dispatch({ type: "DELETE_RECORD_START" });
 
     try {
-      await api.delete<Record>(`/records/${recordId}`);
+      await api().delete<Record>(`/records/${recordId}`);
       dispatch({ type: "DELETE_RECORD_SUCCESS", payload: recordId });
     } catch {
       dispatch({ type: "DELETE_RECORD_ERROR" });
