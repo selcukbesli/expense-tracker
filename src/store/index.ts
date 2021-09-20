@@ -6,7 +6,7 @@ import { CategoryState } from "../types/category";
 import userReducer from "../store/reducers/userReducer";
 import categoryReducer from "../store/categorySlice";
 import { RecordState } from "../types/record";
-import recordReducer from "./reducers/recordReducer";
+import recordReducer from "./recordSlice";
 
 export interface AppState {
   user: UserState;

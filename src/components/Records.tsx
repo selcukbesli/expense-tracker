@@ -16,15 +16,15 @@ import {
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import { useAppDispatch, useAppSelector } from "../store";
-import {
-  addRecord,
-  deleteRecord,
-  getRecords,
-  updateRecord,
-} from "../store/actions/recordActions";
 import { Record, RecordForm } from "../types/record";
 import { Mode } from "../types/general";
 import { asyncGetCategories } from "../store/categorySlice";
+import {
+  asyncAddRecord,
+  asyncDeleteRecord,
+  asyncGetRecords,
+  asyncUpdateRecord,
+} from "../store/recordSlice";
 
 const emptyForm: RecordForm = {
   title: "",
@@ -44,7 +44,7 @@ const Records = () => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(getRecords());
+    dispatch(asyncGetRecords());
     dispatch(asyncGetCategories());
 
     // !categories.length && dispatch(getCategories());
@@ -58,11 +58,11 @@ const Records = () => {
   const handleOk = () => {
     // Create or Update will be invoked depends on mode
     if (mode === "new") {
-      dispatch(addRecord(form));
+      dispatch(asyncAddRecord(form));
     } else if (mode === "edit") {
-      dispatch(updateRecord(form));
+      dispatch(asyncUpdateRecord(form));
     } else if (mode === "delete") {
-      dispatch(deleteRecord(form.recordId!));
+      dispatch(asyncDeleteRecord(form.recordId!));
     }
 
     setIsModalVisible(false);
