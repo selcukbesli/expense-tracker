@@ -15,14 +15,15 @@ import { GithubPicker } from "react-color";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
 import { Category, CategoryForm } from "../types/category";
-import {
-  getCategories,
-  addCategory,
-  updateCategory,
-  deleteCategory,
-} from "../store/actions/categoryActions";
 import { useAppDispatch, useAppSelector } from "../store";
 import { Mode } from "../types/general";
+
+import {
+  asyncAddCategory,
+  asyncDeleteCategory,
+  asyncGetCategories,
+  asyncUpdateCategory,
+} from "../store/categorySlice";
 
 const emptyForm: CategoryForm = {
   name: "",
@@ -39,9 +40,8 @@ const Categories = () => {
 
   //eslint-disable-next-line
   const { data, loading, error } = useAppSelector((state) => state.categories);
-
   useEffect(() => {
-    dispatch(getCategories());
+    dispatch(asyncGetCategories());
   }, [dispatch]);
 
   // Modal Functions
@@ -53,11 +53,11 @@ const Categories = () => {
   const handleOk = () => {
     // Create or Update will be invoked depends on mode
     if (mode === "new") {
-      dispatch(addCategory(form));
+      dispatch(asyncAddCategory(form));
     } else if (mode === "edit") {
-      dispatch(updateCategory(form, form.id!));
+      dispatch(asyncUpdateCategory({ form, categoryId: form.id! }));
     } else if (mode === "delete") {
-      dispatch(deleteCategory(form.id!));
+      dispatch(asyncDeleteCategory(form.id!));
     }
 
     setIsModalVisible(false);

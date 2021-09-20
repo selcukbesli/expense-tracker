@@ -24,7 +24,7 @@ import {
 } from "../store/actions/recordActions";
 import { Record, RecordForm } from "../types/record";
 import { Mode } from "../types/general";
-import { getCategories } from "../store/actions/categoryActions";
+import { asyncGetCategories } from "../store/categorySlice";
 
 const emptyForm: RecordForm = {
   title: "",
@@ -45,7 +45,7 @@ const Records = () => {
 
   useEffect(() => {
     dispatch(getRecords());
-    dispatch(getCategories());
+    dispatch(asyncGetCategories());
 
     // !categories.length && dispatch(getCategories());
   }, [dispatch]);
