@@ -65,7 +65,6 @@ const Records = () => {
     // Create or Update will be invoked depends on mode
     if (mode === "new") {
       dispatch(addRecord(form));
-      console.log(form);
     } else if (mode === "edit") {
       dispatch(updateRecord(form));
     } else if (mode === "delete") {
@@ -169,8 +168,6 @@ const Records = () => {
     form.amount < 0.01 ||
     !form.category_id
   );
-
-  console.log(isFormValid);
 
   return (
     <>

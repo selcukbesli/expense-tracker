@@ -6,9 +6,13 @@ const defaultState: UserState = {
   error: "",
 };
 
-const userReducer = (state: UserState = defaultState, action: UserAction) => {
+const userReducer = (
+  state: UserState = defaultState,
+  action: UserAction
+): UserState => {
   switch (action.type) {
     case "LOGIN_START":
+    case "IS_LOGGED_IN_START":
       return {
         ...state,
         loading: true,
@@ -16,6 +20,7 @@ const userReducer = (state: UserState = defaultState, action: UserAction) => {
       };
 
     case "LOGIN_SUCCESS":
+    case "IS_LOGGED_IN_SUCCESS":
       return {
         ...state,
         data: action.payload,
@@ -24,10 +29,17 @@ const userReducer = (state: UserState = defaultState, action: UserAction) => {
       };
 
     case "LOGIN_ERROR":
+    case "IS_LOGGED_IN_ERROR":
       return {
         ...state,
         loading: false,
         error: action.payload,
+      };
+
+    case "LOGOUT":
+      return {
+        ...state,
+        data: {} as User,
       };
 
     default:
