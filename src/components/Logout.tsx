@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Redirect } from "react-router";
 
 import { useAppDispatch, useAppSelector } from "../store";
-import { logout } from "../store/actions/userActions";
+import { logout } from "../store/userSlice";
 
 const Logout = () => {
   const dispatch = useAppDispatch();

@@ -3,7 +3,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 import { UserState } from "../types/user";
 import { CategoryState } from "../types/category";
-import userReducer from "../store/reducers/userReducer";
+import userReducer from "../store/userSlice";
 import categoryReducer from "../store/categorySlice";
 import { RecordState } from "../types/record";
 import recordReducer from "./recordSlice";

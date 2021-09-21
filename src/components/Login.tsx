@@ -3,9 +3,9 @@ import { useHistory, useLocation } from "react-router-dom";
 import { Form, Input, Button, Result } from "antd";
 
 import { useAppDispatch, useAppSelector } from "../store";
-import { login } from "../store/actions/userActions";
 import { LoginForm } from "../types/user";
 import * as messages from "../utils/messages";
+import { asyncLogin } from "../store/userSlice";
 
 const Login = () => {
   const history = useHistory();
@@ -16,7 +16,7 @@ const Login = () => {
   const { message } = data;
 
   const onFinish = (values: LoginForm) => {
-    dispatch(login(values));
+    dispatch(asyncLogin(values));
   };
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import { Layout, Menu } from "antd";
 import { useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store";
-import { isLoggedIn } from "../store/actions/userActions";
+import { asyncIsLoggedIn } from "../store/userSlice";
 
 const AppHeader = () => {
   const dispatch = useAppDispatch();
@@ -16,7 +16,7 @@ const AppHeader = () => {
 
   useEffect(() => {
     if (localStorage.getItem("jwt")) {
-      dispatch(isLoggedIn());
+      dispatch(asyncIsLoggedIn());
     }
   }, [dispatch]);
 
