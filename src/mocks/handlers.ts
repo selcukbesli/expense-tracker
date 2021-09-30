@@ -1,10 +1,12 @@
-import { rest } from "msw";
+import { DefaultRequestBody, rest } from "msw";
 
+import { Category } from "../types/category";
 import { LoginForm, User } from "../types/user";
+import { baseUrl } from "../test/constants";
 
 export const handlers = [
   // Handles a POST /login request
-  rest.post<LoginForm, User>("/login", (req, res, ctx) => {
+  rest.post<LoginForm, User>(`${baseUrl}/users/login`, (req, res, ctx) => {
     const { username } = req.body;
 
     return res(
@@ -19,4 +21,16 @@ export const handlers = [
       })
     );
   }),
+  rest.get<DefaultRequestBody, Category[]>(
+    `${baseUrl}/categories`,
+    (req, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json([
+          { id: 250, name: "Education", type: "expense", color: "#db3e00" },
+          { id: 251, name: "Salary", type: "income", color: "#008b02" },
+        ])
+      );
+    }
+  ),
 ];
