@@ -43,4 +43,21 @@ export const handlers = [
       );
     }
   ),
+  rest.post<{ token: string }, User>(
+    `${baseUrl}/users/is_logged_in`,
+    (req, res, ctx) => {
+      const { token } = req.body;
+
+      return res(
+        ctx.status(201),
+        ctx.json({
+          username: "selcuk",
+          message: "Login Successfull",
+          email: "johndoe@gmail.com",
+          full_name: "John Doe",
+          token,
+        })
+      );
+    }
+  ),
 ];

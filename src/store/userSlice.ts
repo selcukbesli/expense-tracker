@@ -18,11 +18,19 @@ export const asyncLogin = createAsyncThunk(
     return response.data;
   }
 );
-export const asyncIsLoggedIn = createAsyncThunk("user/isLoggedIn", async () => {
-  const response = await api().post<User>("/users/is_logged_in");
-
-  return response.data;
-});
+export const asyncIsLoggedIn = createAsyncThunk(
+  "user/isLoggedIn",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api().post<User>("/users/is_logged_in");
+      return response.data;
+    } catch (err: any) {
+      localStorage.removeItem("jwt");
+      console.log({ err });
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 
 export const logout = createAsyncThunk("user/logout", async () => {
   localStorage.removeItem("jwt");
@@ -59,7 +67,7 @@ const userSlice = createSlice({
     });
     builder.addCase(asyncIsLoggedIn.rejected, (state, action) => {
       state.loading = false;
-      state.error = action.type;
+      state.error = "";
     });
     builder.addCase(logout.fulfilled, (state, action) => {
       state.data = {} as User;
