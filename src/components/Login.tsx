@@ -76,6 +76,13 @@ const Login = () => {
         <Button type="primary" htmlType="submit">
           Submit
         </Button>
+        <Button
+          type="link"
+          htmlType="button"
+          onClick={() => history.push("register")}
+        >
+          If you don't have account, click for register !
+        </Button>
       </Form.Item>
     </Form>
   );

@@ -33,4 +33,14 @@ export const handlers = [
       );
     }
   ),
+
+  rest.post<DefaultRequestBody, { message: string }>(
+    `${baseUrl}/users/register`,
+    (req, res, ctx) => {
+      return res(
+        ctx.status(201),
+        ctx.json({ message: "User registration is successful." })
+      );
+    }
+  ),
 ];
